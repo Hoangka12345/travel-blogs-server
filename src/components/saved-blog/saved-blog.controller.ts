@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Query, Request, UseGuards } from '@nestjs/common';
 import { SavedBlogService } from './saved-blog.service';
 import { Request as ExpressRequest } from 'express';
 import { AuthGuard } from 'src/guards/verify_token.guard';
@@ -10,10 +10,11 @@ export class SavedBlogController {
     @UseGuards(AuthGuard)
     @Get()
     getSavedBlogs(
-        @Request() request: ExpressRequest
+        @Request() request: ExpressRequest,
+        @Query('page') page: number,
     ) {
         const { _id } = request['user']
-        return this.savedBlogService.getSavedBlogs(_id)
+        return this.savedBlogService.getSavedBlogs(_id, page)
     }
 
     @UseGuards(AuthGuard)

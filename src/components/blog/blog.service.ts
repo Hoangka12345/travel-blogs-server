@@ -50,7 +50,10 @@ export class BlogService {
                 )
                 return {
                     statusCode: HttpStatus.OK,
-                    data: newBlogs
+                    data: {
+                        blogs: newBlogs,
+                        pageNumber: Math.ceil(newBlogs.length / 5)
+                    }
                 }
             } return {
                 statusCode: HttpStatus.OK,
@@ -83,7 +86,10 @@ export class BlogService {
                 )
                 return {
                     statusCode: HttpStatus.OK,
-                    data: newBlogs
+                    data: {
+                        blogs: newBlogs,
+                        pageNumber: Math.ceil(newBlogs.length / 5)
+                    }
                 }
             } return {
                 statusCode: HttpStatus.OK,
@@ -114,7 +120,10 @@ export class BlogService {
                         };
                     })
                 )
-                return newBlogs
+                return {
+                    blogs: newBlogs,
+                    pageNumber: Math.ceil(newBlogs.length / 5)
+                }
             } return []
         } catch (error) {
             console.log(">>> getting err when trying to get blogs of user: ", error);
@@ -139,7 +148,10 @@ export class BlogService {
                         };
                     })
                 )
-                return newBlogs
+                return {
+                    blogs: newBlogs,
+                    pageNumber: Math.ceil(newBlogs.length / 5)
+                }
             } return []
         } catch (error) {
             console.log(">>> getting err when trying to get blogs of user after login: ", error);

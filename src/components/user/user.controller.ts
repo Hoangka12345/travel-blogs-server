@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Put, Request, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Param, Put, Query, Request, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { AuthGuard } from 'src/guards/verify_token.guard';
@@ -27,9 +27,10 @@ export class UserController {
 
     @Get("profile/:id")
     async getProfile(
-        @Param("id") userId: string
+        @Param("id") userId: string,
+        @Query('page') page: number,
     ) {
-        return this.userService.getProfile(userId)
+        return this.userService.getProfile(userId, page)
     }
 
     @UseGuards(AuthGuard)
@@ -37,9 +38,10 @@ export class UserController {
     async getProfileWhenLogin(
         @Param("id") userId: string,
         @Request() request: ExpressRequest,
+        @Query('page') page: number,
     ) {
         const { _id } = request['user']
-        return this.userService.getProfileWhenLogin(userId, _id)
+        return this.userService.getProfileWhenLogin(userId, _id, page)
     }
 
     @UseGuards(AuthGuard)

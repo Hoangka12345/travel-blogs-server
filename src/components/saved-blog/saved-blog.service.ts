@@ -9,17 +9,23 @@ export class SavedBlogService {
         private readonly savedBlogRepo: SavedBlogRepository
     ) { }
 
-    async getSavedBlogs(userId: string): Promise<I_Response<SavedBlog>> {
+    async getSavedBlogs(userId: string, page: number = 1): Promise<I_Response<any>> {
         try {
-            const savedBlogs = await this.savedBlogRepo.getSavedBlogs(userId)
+            const savedBlogs = await this.savedBlogRepo.getSavedBlogs(userId, page)
             if (savedBlogs[0]) {
                 return {
                     statusCode: HttpStatus.OK,
-                    data: savedBlogs
+                    data: {
+                        blogs: savedBlogs,
+                        blogsNumber: savedBlogs.length
+                    }
                 }
             } return {
                 statusCode: HttpStatus.OK,
-                data: []
+                data: {
+                    blogs: [],
+                    blogsNumber: 0
+                }
             }
         } catch (error) {
             console.log(">>> error when get saved blogs: ", error);

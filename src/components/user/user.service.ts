@@ -32,15 +32,15 @@ export class UserService {
         }
     }
 
-    async getProfile(userId: string): Promise<I_Response<any>> {
+    async getProfile(userId: string, page: number = 1): Promise<I_Response<any>> {
         const user = await this.getUserInfo(userId)
         if (user.statusCode === 200) {
             // get user's blogs from blog service
-            const blogs = await this.blogService.getBlogsOfUser(userId)
-            if (blogs) {
+            const blogsData = await this.blogService.getBlogsOfUser(userId, page)
+            if (blogsData) {
                 return {
                     statusCode: HttpStatus.OK,
-                    data: { user: user.data, blogs }
+                    data: { user: user.data, blogs: blogsData?.blogs, pageNumber: blogsData?.pageNumber }
                 }
             }
         } return {
@@ -48,16 +48,16 @@ export class UserService {
         }
     }
 
-    async getProfileWhenLogin(profileUserId: string, userId: string): Promise<I_Response<any>> {
+    async getProfileWhenLogin(profileUserId: string, userId: string, page: number = 1): Promise<I_Response<any>> {
         const user = await this.getUserInfo(profileUserId)
         if (user.statusCode === 200) {
             // get user's blogs from blog service
-            const blogs = await this.blogService.getBlogsOfUserWhenLogin(userId, profileUserId)
+            const blogsData = await this.blogService.getBlogsOfUserWhenLogin(userId, profileUserId, page)
 
-            if (blogs) {
+            if (blogsData) {
                 return {
                     statusCode: HttpStatus.OK,
-                    data: { user, blogs }
+                    data: { user: user.data, blogs: blogsData?.blogs, pageNumber: blogsData?.pageNumber }
                 }
             }
         } return {
