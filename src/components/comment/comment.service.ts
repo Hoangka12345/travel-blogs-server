@@ -35,7 +35,6 @@ export class CommentService {
                     }
                 })
 
-
                 return newComments
             }
         } catch (error) {

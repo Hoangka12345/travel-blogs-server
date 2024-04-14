@@ -36,7 +36,6 @@ export class BlogService {
                     blogs.map(async (blog) => {
                         const reactionCount = await this.reactionService.countReactions(blog._id);
                         const commentCount = await this.commentService.countComments(blog._id)
-                        const comments = await this.commentService.getCommentsByBlog(blog._id)
 
                         const { userId, ...rest } = blog
                         return {
@@ -44,7 +43,6 @@ export class BlogService {
                             user: userId,
                             reactionCount,
                             commentCount,
-                            comments
                         };
                     })
                 )
@@ -75,12 +73,10 @@ export class BlogService {
                     blogs.map(async (blog) => {
                         const reactionCount = await this.reactionService.countReactions(blog._id);
                         const commentCount = await this.commentService.countComments(blog._id)
-                        const comments = await this.commentService.getCommentsByBlog(blog._id)
                         return {
                             ...blog,
                             reactionCount,
                             commentCount,
-                            comments
                         };
                     })
                 )
@@ -109,14 +105,12 @@ export class BlogService {
                     blogs.map(async (blog) => {
                         const reactionCount = await this.reactionService.countReactions(blog._id);
                         const commentCount = await this.commentService.countComments(blog._id)
-                        const comments = await this.commentService.getCommentsByBlog(blog._id)
                         const { userId, ...rest } = blog.toObject()
                         return {
                             ...rest,
                             user: userId,
                             reactionCount,
                             commentCount,
-                            comments
                         };
                     })
                 )
@@ -139,12 +133,10 @@ export class BlogService {
                     blogs.map(async (blog) => {
                         const reactionCount = await this.reactionService.countReactions(blog._id);
                         const commentCount = await this.commentService.countComments(blog._id)
-                        const comments = await this.commentService.getCommentsByBlog(blog._id)
                         return {
                             ...blog,
                             reactionCount,
                             commentCount,
-                            comments
                         };
                     })
                 )

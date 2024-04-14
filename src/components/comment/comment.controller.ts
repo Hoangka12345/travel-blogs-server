@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Param, Post, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Request, UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/guards/verify_token.guard';
 import { CommentService } from './comment.service';
 import { Request as ExpressRequest } from 'express';
@@ -7,6 +7,13 @@ import { CommentDto } from './dto/comment.dto';
 @Controller('comment')
 export class CommentController {
     constructor(private readonly commentService: CommentService) { }
+
+    // @Get(":id")
+    // getCommentsByBlog(
+    //     @Param('id') blogId: string,
+    // ) {
+    //     return this.commentService.getCommentsByBlog(blogId)
+    // }
 
     @UseGuards(AuthGuard)
     @Post()
