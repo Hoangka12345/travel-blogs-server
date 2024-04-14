@@ -29,6 +29,11 @@ export class UserRepository extends BaseRepository<User> {
                 }
             },
             {
+                $match: {
+                    totalBlogs: { $gt: 0 } // Chỉ chọn những người dùng có ít nhất một blog
+                }
+            },
+            {
                 $sort: { totalBlogs: -1 }
             },
             {

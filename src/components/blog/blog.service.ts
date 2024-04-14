@@ -25,8 +25,23 @@ export class BlogService {
             .replace(/d/g, '[d,đ]');
     }
 
+    private async getTotalPage(regex: string): Promise<number> {
+        try {
+            const totalBlogs = await this.blogRepo.count({
+                address: { $regex: regex, $options: 'i' }
+            })
+            if (totalBlogs) {
+                return Math.ceil(totalBlogs / 5)
+            }
+        } catch (error) {
+            console.log(">>> getting err when trying to count blogs ", error);
+            throw new InternalServerErrorException
+        }
+    }
+
     async getBlogs(page: number, search: string = ""): Promise<I_Response<any>> {
         const regex = this.convertLetter(search)
+        const totalPage = await this.getTotalPage(regex)
 
         try {
             const blogs = await this.blogRepo.getBlogs(regex, page)
@@ -50,7 +65,7 @@ export class BlogService {
                     statusCode: HttpStatus.OK,
                     data: {
                         blogs: newBlogs,
-                        pageNumber: Math.ceil(newBlogs.length / 5)
+                        pageNumber: totalPage
                     }
                 }
             } return {
@@ -59,12 +74,14 @@ export class BlogService {
             }
         } catch (error) {
             console.log(">>> getting err when trying to get blogs ", error);
-            throw new HttpException("Lỗi server", HttpStatus.INTERNAL_SERVER_ERROR)
+            throw new InternalServerErrorException
         }
     }
 
     async getBlogsWhenLogin(userId: string, page: number, search: string = ""): Promise<I_Response<any>> {
         const regex = this.convertLetter(search)
+        const totalPage = await this.getTotalPage(regex)
+
         try {
             const blogs = await this.blogRepo.getBlogsWhenLogin(regex, userId, page)
 
@@ -84,7 +101,7 @@ export class BlogService {
                     statusCode: HttpStatus.OK,
                     data: {
                         blogs: newBlogs,
-                        pageNumber: Math.ceil(newBlogs.length / 5)
+                        pageNumber: totalPage
                     }
                 }
             } return {

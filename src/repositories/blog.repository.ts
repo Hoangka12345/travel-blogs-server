@@ -26,6 +26,7 @@ export class BlogRepository extends BaseRepository<Blog> {
                 select: ['_id', 'fullName', 'avatar'],
                 model: 'User',
             })
+            .sort({ createdAt: -1 })
             .exec();
     }
 
@@ -104,14 +105,14 @@ export class BlogRepository extends BaseRepository<Blog> {
                 },
             },
             {
+                $sort: { createdAt: -1 }
+            },
+            {
                 $skip: (page - 1) * 5
             },
             {
                 $limit: 5
             },
-            {
-                $sort: { createdAt: -1 }
-            }
         ]).exec()
     }
 

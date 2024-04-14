@@ -15,6 +15,6 @@ export class CommentRepository extends BaseRepository<Comment> {
 
     async getCommentsByBlog(blogId: string): Promise<Comment[]> {
         return await this.commentModel.find({ blogId })
-            .populate('userId', ['_id', 'fullName', 'avatar'])
+            .populate('userId', ['_id', 'fullName', 'avatar']).sort({ createdAt: -1 })
     }
 }
